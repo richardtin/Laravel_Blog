@@ -151,6 +151,12 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
+         * Package Service Providers
+         */
+        Gvb\Whoops\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+
+        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
@@ -203,6 +209,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        /*
+         * Package Alias
+         */
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 
