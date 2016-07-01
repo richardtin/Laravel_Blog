@@ -11,14 +11,16 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
+        \App\Post::truncate();
+
         foreach(range(1, 20) as $id) {
-        	\App\Post::create([
-        		'title' => '假文章標題 - '.$id,
-        		'sub_title' => '假文章副標題',
-        		'content' => '假文章內容',
-        		'is_feature' => false,
-        		'page_view' => 10,
-        	]);
+            \App\Post::create([
+                'title' => '假文章標題 - '.$id,
+                'sub_title' => '假文章副標題',
+                'content' => '假文章內容',
+                'is_feature' => false,
+                'page_view' => 10,
+            ]);
         }
     }
 }
