@@ -19,3 +19,26 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Post::class, function ($faker) {
+    return [
+        'title' => $faker->sentence,
+        'sub_title' => $faker->sentence,
+        'content' => $faker->paragraph,
+        'is_feature' => rand(0, 1),
+        'page_view' => rand(0, 200),
+        'created_at' => $faker->dateTime(),
+        'updated_at' => $faker->dateTime(),
+    ];
+});
+
+$factory->define(App\Comment::class, function ($faker) {
+    return [
+        'name' => $faker->name,
+        'email' => $faker->safeEmail,
+        'content' => $faker->paragraph,
+        'post_id' => rand(1, 20),
+        'created_at' => $faker->dateTime(),
+        'updated_at' => $faker->dateTime(),
+    ];
+});
