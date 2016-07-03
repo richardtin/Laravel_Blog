@@ -13,4 +13,8 @@ class Comment extends Model
         'is_feature',
         'page_view',
     ];
+
+    public function post() {
+        return $this->belongsTo('\App\Post');
+    }
 }

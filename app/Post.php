@@ -11,4 +11,8 @@ class Post extends Model
         'email',
         'content',
     ];
+
+    public function comments() {
+        return $this->hasMany('\App\Comment');
+    }
 }
