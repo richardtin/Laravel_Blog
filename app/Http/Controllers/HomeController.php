@@ -12,7 +12,7 @@ class HomeController extends Controller
         $postType = '精選文章';
         $posts = \App\Post::where('is_feature', 1)
                           ->orderBy('created_at', 'desc')
-                          ->get();
+                          ->paginate(5);
         $data = compact('postType', 'posts');
 
         return view('posts.index', $data);
