@@ -31,6 +31,12 @@ class PostsController extends Controller
 
     public function random() {
         $post = \App\Post::all()->random();
+
+        if (is_null($post)) {
+            return redirect()->route('posts.index')
+                             ->with('warning', '目前沒有文章');
+        }
+
         $data = compact('post');
 
         return view('posts.show', $data);
@@ -43,11 +49,17 @@ class PostsController extends Controller
     public function store(PostRequest $request) {
         $post = \App\Post::create($request->all());
 
-        return redirect()->route('posts.show', $post->id);
+        return redirect()->route('posts.show', $post->id)
+                         ->with('success', '新增文章完成');
     }
 
     public function show($id) {
         $post = \App\Post::find($id);
+
+        if (is_null($post)) {
+            return redirect()->route('posts.index')
+                             ->with('warning', '找不到該文章');
+        }
 
         $post->page_view += 1;
         $post->save();
@@ -60,15 +72,29 @@ class PostsController extends Controller
 
     public function edit($id) {
         $post = \App\Post::find($id);
+
+        if (is_null($post)) {
+            return redirect()->route('posts.index')
+                             ->with('warning', '找不到該文章');
+        }
+
         $data = compact('post');
+
         return view('posts.edit', $data);
     }
 
     public function update($id, PostRequest $request) {
         $post = \App\Post::find($id);
+
+        if (is_null($post)) {
+            return redirect()->route('posts.index')
+                             ->with('warning', '找不到該文章');
+        }
+
         $post->update($request->all());
 
-        return redirect()->route('posts.show', $post->id);
+        return redirect()->route('posts.show', $post->id)
+                         ->with('success', '文章更新完成');
     }
 
     public function destroy($id) {
@@ -78,14 +104,22 @@ class PostsController extends Controller
         }
         $post->delete();
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')
+                         ->with('success', '刪除文章及留言成功');
     }
 
     public function comment($id, CommentRequest $request) {
         $post    = \App\Post::find($id);
+
+        if (is_null($post)) {
+            return redirect()->route('posts.index')
+                             ->with('warning', '找不到該文章');
+        }
+
         $comment = \App\Comment::create($request->all());
         $post->comments()->save($comment);
 
-        return redirect()->route('posts.show', $post->id);
+        return redirect()->route('posts.show', $post->id)
+                         ->with('success', '回覆留言成功');
     }
 }
