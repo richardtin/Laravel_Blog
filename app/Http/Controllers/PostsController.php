@@ -9,16 +9,29 @@ use App\Http\Requests;
 class PostsController extends Controller
 {
     public function index() {
-        return view('posts.index');
+        $postType = '文章總覽';
+        $posts = \App\Post::orderBy('created_at', 'desc')
+                          ->get();
+        $data = compact('postType', 'posts');
+
+        return view('posts.index', $data);
     }
 
     public function hot() {
-        return view('posts.index');
+        $postType = '熱門文章';
+        $posts = \App\Post::orderBy('page_view', 'desc')
+                          ->orderBy('created_at', 'desc')
+                          ->get();
+        $data = compact('postType', 'posts');
+
+        return view('posts.index', $data);
     }
 
     public function random() {
-        $id = rand(1, 10);
-        $data = compact('id');
+        $id = rand(1, 20);
+        $post = \App\Post::find($id);
+        $data = compact('post');
+
         return view('posts.show', $data);
     }
 
@@ -31,9 +44,12 @@ class PostsController extends Controller
     }
 
     public function show($id) {
-        $data = compact('id');
+        $post = \App\Post::find($id);
+        $data = compact('post');
+
         return view('posts.show', $data);
     }
+
 
     public function edit($id) {
         $data = compact('id');
