@@ -41,7 +41,8 @@ class PostsController extends Controller
 
     public function store(Request $request) {
         $post = \App\Post::create($request->all());
-        return 'posts.store';
+
+        return redirect()->route('posts.show', $post->id);
     }
 
     public function show($id) {
@@ -62,7 +63,7 @@ class PostsController extends Controller
         $post = \App\Post::find($id);
         $post->update($request->all());
 
-        return 'posts.update'.$id;
+        return redirect()->route('posts.show', $post->id);
     }
 
     public function destroy($id) {
@@ -72,7 +73,7 @@ class PostsController extends Controller
         }
         $post->delete();
 
-        return 'posts.destroy'.$id;
+        return redirect()->route('posts.index');
     }
 
     public function comment($id, Request $request) {
@@ -80,6 +81,6 @@ class PostsController extends Controller
         $comment = \App\Comment::create($request->all());
         $post->comments()->save($comment);
 
-        return 'posts.comment'.$id;
+        return redirect()->route('posts.show', $post->id);
     }
 }
