@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use App\Http\Requests\CommentRequest;
+use App\Http\Requests\PostRequest;
 
 class PostsController extends Controller
 {
@@ -39,7 +40,7 @@ class PostsController extends Controller
         return view('posts.create');
     }
 
-    public function store(Request $request) {
+    public function store(PostRequest $request) {
         $post = \App\Post::create($request->all());
 
         return redirect()->route('posts.show', $post->id);
@@ -63,7 +64,7 @@ class PostsController extends Controller
         return view('posts.edit', $data);
     }
 
-    public function update($id, Request $request) {
+    public function update($id, PostRequest $request) {
         $post = \App\Post::find($id);
         $post->update($request->all());
 
@@ -80,7 +81,7 @@ class PostsController extends Controller
         return redirect()->route('posts.index');
     }
 
-    public function comment($id, Request $request) {
+    public function comment($id, CommentRequest $request) {
         $post    = \App\Post::find($id);
         $comment = \App\Comment::create($request->all());
         $post->comments()->save($comment);
