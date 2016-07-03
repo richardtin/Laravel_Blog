@@ -39,7 +39,8 @@ class PostsController extends Controller
         return view('posts.create');
     }
 
-    public function store() {
+    public function store(Request $request) {
+        $post = \App\Post::create($request->all());
         return 'posts.store';
     }
 
@@ -57,15 +58,28 @@ class PostsController extends Controller
         return view('posts.edit', $data);
     }
 
-    public function update($id) {
+    public function update($id, Request $request) {
+        $post = \App\Post::find($id);
+        $post->update($request->all());
+
         return 'posts.update'.$id;
     }
 
     public function destroy($id) {
+        $post = \App\Post::find($id);
+        foreach($post->comments as $comment) {
+            $comment->delete();
+        }
+        $post->delete();
+
         return 'posts.destroy'.$id;
     }
 
-    public function comment($id) {
+    public function comment($id, Request $request) {
+        $post    = \App\Post::find($id);
+        $comment = \App\Comment::create($request->all());
+        $post->comments()->save($comment);
+
         return 'posts.comment'.$id;
     }
 }
